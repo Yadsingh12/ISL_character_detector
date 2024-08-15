@@ -13,6 +13,9 @@ https://www.kaggle.com/datasets/soumyakushwaha/indian-sign-language-dataset
 https://github.com/ayeshatasnim-h/Indian-Sign-Language-dataset
 
 
+AIM:
+The goal of the project is to build a reliable detection system that can detect the representation of engish character as in Indian sign language in a live detection environment with a fairly good accuracy.
+
 MODEL PERFORMANCE:
 
 Although the earlier versions (versions_1 and version_2) works well on the dataset(80 percent accuracy for version_1 and 90% accuracy for version_2 on validation dataset), yet they still do poorly on live detection. They show big signs of bias where a handful of signs are classified much more than others.
@@ -33,4 +36,8 @@ I used google's mobilenetV2 as the base for the model and tried to classify sign
 
 WHEN NUMBERS NOT CONVEY EVERYTHING:
 
-I was exciting to see my model gaining an accuacy of 80 percent on validation dataset. However, I did not noticed that since, the model was not trained in one go, the random split between training and validation dataset would be different each time. This meant that when I retrain the model at a different time, it had already been trained on most of the validation dataset.
+Since, I was short on data, I chose not to have a seperate tarining dataset. I was exciting to see my model gaining an accuacy of 80 percent on validation dataset. However, I did not noticed that since, the model was not trained in one go, the random split between training and validation dataset would be different each time. This meant that when I retrain the model at a different time, it had already been trained on most of the validation dataset.
+
+
+RETRAINING THE MODEL:
+After being upset about my model's poor performance when used for live detection, I chose to retrain my model. I thought maybe more training would be beneficial. After training, the newer model (version_2) got a 90 percent accuracy on validation dataset and an increase in performance in live detection but it was still biased and would output a haandful of characters('B' 'C' 'D' 'G') in place of the correct labels most of the time in live detection.
