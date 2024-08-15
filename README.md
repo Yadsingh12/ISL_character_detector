@@ -38,6 +38,10 @@ WHEN NUMBERS NOT CONVEY EVERYTHING:
 
 Since, I was short on data, I chose not to have a seperate tarining dataset. I was exciting to see my model gaining an accuacy of 80 percent on validation dataset. However, I did not noticed that since, the model was not trained in one go, the random split between training and validation dataset would be different each time. This meant that when I retrain the model at a different time, it had already been trained on most of the validation dataset.
 
+WRONG WAY OF DOING AUGMENTATION:
+
+The way the I implemented the augmentation in my code made the images of the signs vastly different from what they originally meant to be. Due to this, it became very difficult for the model to distinguish between some signs.('A' & 'B', 'C' & 'O', 'U' & 'V', 'E' & 'J' etc.). So, I had to redo the augmentation.
+
 
 RETRAINING THE MODEL:
 
