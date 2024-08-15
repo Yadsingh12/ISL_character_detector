@@ -40,4 +40,10 @@ Since, I was short on data, I chose not to have a seperate tarining dataset. I w
 
 
 RETRAINING THE MODEL:
+
 After being upset about my model's poor performance when used for live detection, I chose to retrain my model. I thought maybe more training would be beneficial. After training, the newer model (version_2) got a 90 percent accuracy on validation dataset and an increase in performance in live detection but it was still biased and would output a haandful of characters('B' 'C' 'D' 'G') in place of the correct labels most of the time in live detection.
+
+
+REASON FOR POOR PERFORMANCE:
+
+The biggest reason for the poor performance of the model was that the the background of the images include a lot of noise ( colors, clothes, skin, faces etc.). Though I intentionally included a dataset with a lot of noise so that the model can classify in a noisy environment like live detection but this also meant that model learnt wrong patterns like colors and background of images instead of the position of hands while classifying the signs.
