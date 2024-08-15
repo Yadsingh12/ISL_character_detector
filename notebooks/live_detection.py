@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # Load the trained model
-model = load_model(r'C:\Users\yadau\Desktop\coding\python\openCV\sign_detect\version_1.keras')  # Update this path to your model's path
+model = load_model(r'C:\Users\yadau\Desktop\coding\python\openCV\sign_detect\version_2.keras')  # Update this path to your model's path
 
 # Function to preprocess the image
 def preprocess_image(image):
