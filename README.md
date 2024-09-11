@@ -56,3 +56,9 @@ The biggest reason for the poor performance of the model was that the the backgr
 USING MEDIAPIPE FOR HAND DETECTION:
 
 In order to battle the noise in the bcakground, I started doing research. Then I came across a research paper that used openCV to detect ASL signs through camera. One thing they used was to first use mediapipe to detect hands from the data and then extract those hands, apply white background to the images and then use CNN and sequential model for predictions.
+
+DOING AWAY WITH CNNS:
+
+While training the model, one thing struck me. When we have already extracted relative placement of each part of a hand, then why don't we feed these to a neural network instead of using it to generate an image on a background and training a cnn. This way has these advantages:
+    This would speed the detection process since we are using a small neural network instead of a big convolutional neural network.
+    Since, the input is an array of numbers instead of images, training would be really faster.
