@@ -4,7 +4,7 @@ import mediapipe as mp
 from tensorflow.keras.models import load_model
 
 # Load the trained model
-model = load_model(r'C:\Users\yadau\Desktop\coding\python\openCV\sign_detect\version_2.keras')
+model = load_model(r'C:\Users\yadau\Desktop\coding\python\openCV\sign_detect\version_3.keras')
 
 # Initialize MediaPipe Hands
 mp_hands = mp.solutions.hands
@@ -28,6 +28,12 @@ def get_prediction(image, model, threshold=0.5):
         return predicted_class, max_confidence
     return None, None
 
+# Function to create a single image from both hand regions
+def combine_hands_image(hand_regions, output_size=(224, 224)):
+    hand_images = [cv2.resize(hand, (output_size[0] // 2, output_size[1])) for hand in hand_regions]
+    combined_image = np.hstack(hand_images)  # Place hands side by side
+    return combined_image
+
 # OpenCV setup for capturing video
 cap = cv2.VideoCapture(0)
 
@@ -44,9 +50,14 @@ while True:
 
     # Process the frame and detect hands
     result = hands.process(rgb_frame)
-    
+
     if result.multi_hand_landmarks:
+        hand_regions = []
         for hand_landmarks in result.multi_hand_landmarks:
+
+            # Draw hand landmarks
+            mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+
             # Get the bounding box coordinates of the hand
             x_min = min([lm.x for lm in hand_landmarks.landmark])
             y_min = min([lm.y for lm in hand_landmarks.landmark])
@@ -60,18 +71,21 @@ while True:
             # Extract the hand region
             hand_region = frame[y:y+h, x:x+w]
 
-            # Predict the class of the sign
-            predicted_class, confidence = get_prediction(hand_region, model)
+            # Resize and store hand region
+            hand_regions.append(hand_region)
+        
+        if len(hand_regions) > 0:
+            # Create a combined image from both hand regions
+            combined_hand_image = combine_hands_image(hand_regions)
+
+            # Predict the class of the combined hand image
+            predicted_class, confidence = get_prediction(combined_hand_image, model)
             
             # Display the result
             if predicted_class is not None:
                 text = f'{class_names[predicted_class]}: {confidence:.2f}'
-                cv2.putText(frame, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+                cv2.putText(frame, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
-            # Draw hand landmarks
-            mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
-    
     # Display the original frame
     cv2.imshow('Sign Detection', frame)
     
