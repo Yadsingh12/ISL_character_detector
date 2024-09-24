@@ -14,7 +14,7 @@ mp_drawing = mp.solutions.drawing_utils
 print("Loading the model...")
 
 # Check if the model file exists
-model_path = 'models/number_model.keras'
+model_path = 'models/number_model_copy.h5'
 if not os.path.exists(model_path):
     print(f"Model file not found at {model_path}")
 else:
@@ -32,7 +32,16 @@ except Exception as e:
 number_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 # Start capturing video
-cap = cv2.VideoCapture(0)
+try:
+   cap = cv2.VideoCapture(0)
+except Exception as e:
+        print(f"Error capturing video: {e}")
+
+# Retrieve the width and height of the camera feed
+width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+print(f"Camera Resolution: Width = {width}, Height = {height}")
 
 def process_landmarks(landmarks):
     flattened_landmarks = []
@@ -76,10 +85,15 @@ while cap.isOpened():
         cv2.putText(frame, str(predicted_label), (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv2.LINE_AA)
     else:
         print("No Hands Detected")
+    print("man")
+    try:
+        cv2.imshow('Single Hand Detection', frame)
+    except Exception as e:
+        print(f"Error displaying the frame: {e}")
 
-    cv2.imshow('Single Hand Detection', frame)
-
+    print("whatttt")
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        print("breaking")
         break
 
 cap.release()
