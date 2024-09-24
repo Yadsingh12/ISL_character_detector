@@ -72,3 +72,17 @@ Used openCV to capture my video from front camera of the device and then used me
 DETECTING NUMBERS
 
 To reduce the complexity of the problem, I decided to First make a working model for detecing hand signs for numbers 1-9.
+
+ADDING ZERO AND NONUMBER
+
+After success of the previous model, I made a new model that can classify numbers 0-9 and can also detect (to some degree) that there is no number sign.
+
+MAKING A WEBSITE
+
+A website is made using flask for prediction
+- index.html is the frontend which uses user's camera and locate land
+  handmarks using mediapipe. This are sent to backend for processing and
+  the prediction from the backend is fetched and shown to the user
+ - app.py is the core file of the site. It uses the hand landamrks as
+   input and use the model to predict the hand sign
+ - model/ include the model being used for prediction
