@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import tensorflow as tf
+from tensorflow.keras.models import load_model
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, BatchNormalization
 from sklearn.model_selection import train_test_split
@@ -9,8 +10,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Directory structure
-train_dir = 'dataset_numbers/train'
-test_dir = 'dataset_numbers/test'
+train_dir = '../dataset_numbers/train'
+test_dir = '../dataset_numbers/test'
+val_dir = '../dataset_numbers/validation'
 
 # Classes for digits 0-9 and 'noNumber'
 classes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'noNumber']
@@ -40,10 +42,12 @@ def load_data(directory):
 # Load training and test data
 X_train, y_train = load_data(train_dir)
 X_test, y_test = load_data(test_dir)
+X_val, y_val = load_data(val_dir)
 
 # One-hot encode the labels
 y_train = tf.keras.utils.to_categorical(y_train, num_classes)
 y_test = tf.keras.utils.to_categorical(y_test, num_classes)
+y_val = tf.keras.utils.to_categorical(y_val, num_classes)
 
 # Define the model with input shape 63
 
@@ -62,11 +66,13 @@ model = Sequential([
 # Compile the model
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
+model = load_model('../models/number_model_with_zero.keras')
+
 # Train the model
-history = model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=32)
+history = model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=10, batch_size=32)
 
 # Save the model
-model.save('number_model_with_zero.keras')
+model.save('../models/number_model_with_zero.keras')
 
 # Evaluate the model
 y_pred = model.predict(X_test)

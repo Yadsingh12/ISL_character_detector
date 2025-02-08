@@ -15,15 +15,15 @@ max_test_files = 200
 
 # Function to create class subdirectories for train, validation, and test
 def setup_directories(class_name):
-    os.makedirs(f'dataset_numbers/train/{class_name}', exist_ok=True)
-    os.makedirs(f'dataset_numbers/validation/{class_name}', exist_ok=True)
-    os.makedirs(f'dataset_numbers/test/{class_name}', exist_ok=True)
+    os.makedirs(f'../dataset_numbers/train/{class_name}', exist_ok=True)
+    os.makedirs(f'../dataset_numbers/validation/{class_name}', exist_ok=True)
+    os.makedirs(f'../dataset_numbers/test/{class_name}', exist_ok=True)
 
 # Function to save landmarks with custom filenames in class subfolders
 def save_landmarks(landmarks, class_name, folder_type, count):
     try:
         # Generate the new filename in the class subfolder
-        filename = f'dataset_numbers/{folder_type}/{class_name}/{class_name}_{count + 1}.npy'
+        filename = f'../dataset_numbers/{folder_type}/{class_name}/{class_name}_{count + 1}.npy'
 
         # Save landmarks to the new file
         data = np.array(landmarks).flatten()
@@ -33,9 +33,9 @@ def save_landmarks(landmarks, class_name, folder_type, count):
 
 # Function to count the number of files in the class subfolders for each folder type
 def count_files(class_name):
-    train_count = len(os.listdir(f'dataset_numbers/train/{class_name}'))
-    val_count = len(os.listdir(f'dataset_numbers/validation/{class_name}'))
-    test_count = len(os.listdir(f'dataset_numbers/test/{class_name}'))
+    train_count = len(os.listdir(f'../dataset_numbers/train/{class_name}'))
+    val_count = len(os.listdir(f'../dataset_numbers/validation/{class_name}'))
+    test_count = len(os.listdir(f'../dataset_numbers/test/{class_name}'))
     return train_count, val_count, test_count
 
 # Take user input for class name
@@ -75,9 +75,8 @@ while cap.isOpened():
             
             # Extract hand landmarks
             landmarks = []
-            for hand_landmarks in results.multi_hand_landmarks:
-                for lm in hand_landmarks.landmark:
-                    landmarks.append([lm.x, lm.y, lm.z])
+            for lm in hand_landmarks.landmark:
+                landmarks.append([lm.x, lm.y, lm.z])
 
             # Save landmarks to the appropriate folder based on current counts
             if train_count < max_train_files:
