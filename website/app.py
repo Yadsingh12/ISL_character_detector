@@ -5,7 +5,7 @@ import tensorflow as tf
 import os
 
 # Suppress TensorFlow logs
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "0"
 
 app = Flask(__name__)
 CORS(app)  # Allow all origins, you can configure this as needed
