@@ -2,6 +2,10 @@
 
 This repository contains the code and resources for a hand gesture recognition project. The project uses a trained neural network model to recognize hand gestures and predict numbers from 0 to 9, including a "no number" detection.
 
+## Deployment
+
+Deployed at https://isl-character-detector.onrender.com
+
 ## Repository Structure
 
 - **history**
@@ -23,9 +27,9 @@ This repository contains the code and resources for a hand gesture recognition p
 
 ### Prerequisites
 
-- Python 3.7+
+- Python 3.9.19
 - Flask
-- TensorFlow
+- TensorFlow 2.18.0
 - NumPy
 - Flask-CORS
 
