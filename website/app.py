@@ -4,6 +4,9 @@ import numpy as np
 import tensorflow as tf
 import os
 
+# Suppress TensorFlow logs
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
 app = Flask(__name__)
 CORS(app)  # Allow all origins, you can configure this as needed
 
@@ -53,4 +56,6 @@ def predict():
         return jsonify({'error': 'Internal server error'}), 500
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000)
+    # Get the port from environment variable or use 5000
+    port = int(os.getenv("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
