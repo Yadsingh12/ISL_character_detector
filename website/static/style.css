@@ -1,0 +1,292 @@
+/* Base Styles (Mobile-First Approach) */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: linear-gradient(135deg, #f0f4f8, #e0e7ee);
+    color: #333;
+    padding-top: 20px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 8vw;
+    padding: 0 10px;
+    text-align: center;
+}
+
+/* -------------------- HELP BUTTON STYLING -------------------- */
+#help-button {
+    position: fixed;
+    /* Fixed position relative to viewport */
+    top: 20px;
+    right: 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    /* Ensure it's always on top */
+    transition: background-color 0.2s;
+}
+
+#help-button:hover {
+    background-color: #2980b9;
+}
+
+
+/* -------------------- MODAL STYLING -------------------- */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    z-index: 2000;
+    /* Must be above everything */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Black background with opacity */
+    padding-top: 50px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    /* 5% from the top and centered */
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 700px;
+    /* Max width for readability */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-body h2 {
+    color: #3498db;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-body p {
+    line-height: 1.6;
+    color: #555;
+}
+
+.reference-chart {
+    text-align: center;
+    margin-top: 25px;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+}
+
+.reference-chart img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* -------------------- MOBILE/STACKED LAYOUT -------------------- */
+.main-layout-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-content {
+    display: contents;
+    /* Ensures children flow as direct body children for centering */
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95vw;
+    max-width: 660px;
+    margin: 0 auto 20px auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 5px;
+    aspect-ratio: 4 / 3;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    border: 2px solid #3498db;
+    background-color: #000;
+}
+
+.input_video {
+    display: none;
+}
+
+.feedback-panel {
+    width: 95vw;
+    max-width: 660px;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin: 0 auto;
+}
+
+#status {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+    min-height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#prediction {
+    font-size: 15vw;
+    font-weight: 900;
+    color: #e74c3c;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 70px;
+    line-height: 1;
+    overflow-wrap: break-word;
+}
+
+.spinner {
+    /* (Spinner CSS remains the same) */
+    border: 4px solid rgba(52, 152, 219, 0.2);
+    border-left-color: #3498db;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 0.8s linear infinite;
+    display: none;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* -------------------- WIDER SCREEN (LANDSCAPE) LAYOUT -------------------- */
+@media (min-width: 600px) {
+    body {
+        justify-content: center;
+        padding-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+        margin: 20px 0;
+    }
+
+    .main-layout-wrapper {
+        display: flex;
+        flex-direction: row;
+        /* Horizontal layout for wide screen */
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        width: 95vw;
+        max-width: 1280px;
+        margin: 0 auto;
+        max-height: 90vh;
+    }
+
+    .main-content {
+        display: flex;
+        flex-direction: row;
+        /* Video and Feedback side-by-side */
+        flex-grow: 1;
+        /* Allows this block to take up remaining space */
+        gap: 40px;
+        align-items: center;
+        justify-content: center;
+        max-width: 1000px;
+    }
+
+    .container,
+    .feedback-panel {
+        width: calc(50% - 20px);
+        /* 50% minus half the gap */
+        margin: 0;
+        max-width: 640px;
+        max-height: 480px;
+        aspect-ratio: 4 / 3;
+        /* Keep aspect ratio on wide screen */
+        padding: 10px;
+    }
+
+    .feedback-panel {
+        height: 100%;
+        /* Match container height */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        aspect-ratio: auto;
+    }
+
+    #prediction {
+        font-size: 8rem;
+    }
+
+    #status {
+        font-size: 1.5rem;
+    }
+}

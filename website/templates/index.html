@@ -3,121 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hand Gesture Recognition</title>
+    <title>Responsive Sign Recognition</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> 
+
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        #prediction {
-            font-size: 2rem; /* Make the text larger */
-            font-weight: bold; /* Make the text bold */
-            text-align: center; /* Center the text */
-            margin-bottom: 20px; /* Add space below the prediction */
-        }
-        .container {
-            display: flex; /* Use flexbox for side-by-side layout */
-            justify-content: center; /* Center the elements */
-            align-items: center; /* Align elements vertically */
-            gap: 10px; /* Add space between video and canvas */
-        }
-        video, canvas {
-            width: 640px;
-            height: 480px;
-            border: 1px solid #ccc; /* Optional: Add border for better visibility */
-        }
-    </style>
 </head>
 <body>
-    <h1>Hand Gesture Recognition</h1>
-    <div class="container">
-        <!-- Set the width and height of the video and canvas elements -->
-        <video class="input_video" width="640" height="480" autoplay playsinline hidden></video>
-        <canvas class="output_canvas" width="640" height="480"></canvas>
-    </div>
-    <div id="prediction">Prediction: </div>
+    <h1>Real-Time Sign Recognition ✋</h1>
+    
+    <button id="help-button" aria-label="Show Instructions">?</button>
 
-    <script type="module">
-        const videoElement = document.getElementsByClassName('input_video')[0];
-        const canvasElement = document.getElementsByClassName('output_canvas')[0];
-        const canvasCtx = canvasElement.getContext('2d');
-        const predictionElement = document.getElementById('prediction');
+    <div id="instructions-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Sign Recognition Instructions:</h2>
+            <div class="modal-body">
+                <p>1. Ensure your right hand is visible and well-lit.</p>
+                <p>2. Keep your hand inside the camera frame.</p>
+                <p>3. Wait for the prediction (analysis occurs every 1000ms).</p>
+                <p>4. NaN means that no number has been detected.</p>
+                <p>5. Important: Use the hand shapes shown in the reference chart below.</p>
+            
+                <div class="reference-chart">
+                    <h3>Reference Sign Chart</h3>
+                    <img src="{{ url_for('static', filename='reference_hand_chart.png') }}" alt="ISL Hand Shape Reference Chart">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-layout-wrapper"> 
+        
+        <div class="main-content"> 
+        
+            <div class="container">
+                <video class="input_video" width="640" height="480" autoplay playsinline hidden></video>
+                <canvas class="output_canvas" width="640" height="480"></canvas>
+            </div>
+            
+            <div class="feedback-panel">
+                <div id="status">Waiting for camera permission...</div>
+                <div id="prediction">?</div>
+            </div>
+
+        </div>
+    </div>
     
-        let latestLandmarks = null;
-        let lastSentTime = 0;
-        const sendInterval = 1000; // 1 second
-    
-        function onResults(results) {
-            canvasCtx.save();
-            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-            canvasCtx.scale(-1, 1);
-            canvasCtx.translate(-canvasElement.width, 0);
-            canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
-    
-            if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-                for (let i = 0; i < results.multiHandLandmarks.length; i++) {
-                    let landmarks = results.multiHandLandmarks[i];
-                    drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { color: '#00FF00', lineWidth: 5 });
-                    drawLandmarks(canvasCtx, landmarks, { color: '#FF0000', lineWidth: 2 });
-    
-                    // Extract and flip landmarks
-                    latestLandmarks = landmarks.map(lm => [lm.x, lm.y, lm.z]).flat();
-                    latestLandmarks = latestLandmarks.map((value, index) =>
-                        index % 3 === 0 ? 1 - value : value
-                    );
-                }
-            } else {
-                predictionElement.innerText = 'Prediction: No hand detected';
-                latestLandmarks = null;
-            }
-            canvasCtx.restore();
-        }
-    
-        function sendLandmarksToBackend() {
-            const currentTime = Date.now();
-            if (latestLandmarks && currentTime - lastSentTime >= sendInterval) {
-                lastSentTime = currentTime;
-                fetch('/predict', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ landmarks: latestLandmarks })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    predictionElement.innerText = `Prediction: ${data.prediction}`;
-                })
-                .catch(error => console.error('Error:', error));
-            }
-        }
-    
-        setInterval(sendLandmarksToBackend, 100);
-    
-        const hands = new Hands({
-            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
-        });
-        hands.setOptions({
-            maxNumHands: 1,
-            modelComplexity: 1,
-            minDetectionConfidence: 0.7,
-            minTrackingConfidence: 0.7
-        });
-        hands.onResults(onResults);
-    
-        const camera = new Camera(videoElement, {
-            onFrame: async () => {
-                await hands.send({ image: videoElement });
-            },
-            width: 640,
-            height: 480
-        });
-        camera.start();
-    </script>    
-    
+    <script type="module" src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 </html>
