@@ -47,7 +47,7 @@ def predict():
         
         # Check for the noNumber label
         if predicted_label == "noNumber":
-            return jsonify({'prediction': "No number detected"})
+            return jsonify({'prediction': "NaN"})
         
         return jsonify({'prediction': int(predicted_label)})
     
